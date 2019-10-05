@@ -1,0 +1,39 @@
+<div nz-row nzType="flex" nzJustify="space-around" nzAlign="middle" class="login-wrapper">
+  <form nz-form [formGroup]="LoginForm" class="login-form" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="userErrorTpl">
+        <nz-input-group nzPrefixIcon="user">
+          <input type="text" nz-input formControlName="userName" placeholder="用户名" />
+        </nz-input-group>
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入您的用户名!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('maxlength')||control.hasError('minlength')">
+            用户名长度为3-6位!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control [nzErrorTip]="userErrorTp2">
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password" nz-input formControlName="password" placeholder="密码" />
+        </nz-input-group>
+        <ng-template #userErrorTp2 let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入您的密码!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('pattern')">
+            密码只能由数字或字母组成，长度为6-16位!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <button nz-button class="login-form-button" [nzType]="'primary'">登录</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

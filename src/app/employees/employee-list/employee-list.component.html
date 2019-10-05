@@ -1,0 +1,114 @@
+<nz-table #basicTable [nzData]="listOfData" [nzScroll]="{ x: '1100px' }" [nzFrontPagination]="false"
+  [nzTotal]="totalCount" [(nzPageIndex)]="curPage" [nzPageSize]="pageSize" (nzPageIndexChange)="getData()"
+  [nzLoading]="isLoading">
+  <thead>
+    <tr>
+      <th nzWidth="60px" nzLeft="0px">序号</th>
+      <th nzWidth="100px" nzLeft="60px">姓名</th>
+      <th>性别</th>
+      <th>手机号</th>
+      <th>邮箱</th>
+      <th>入职时间</th>
+      <th nzWidth="160px" nzRight="0px">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data;let i = index;trackBy: trackByEmpId">
+      <td nzLeft="0px">{{ i + 1 }}</td>
+      <td nzLeft="60px">{{ data.name }}</td>
+      <td>{{ data.gender === '1' ? '男' : '女' }}</td>
+      <td>{{ data.phoneNumber }}</td>
+      <td>{{ data.email }}</td>
+      <td>{{ data.joinDate | date: 'yyyy-MM-dd' }}</td>
+      <td nzRight="0px">
+        <a (click)="showEditEmployeeModal(data.id)">修改</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-popconfirm nzPopconfirmTitle="您确认删除该员工吗?" (nzOnConfirm)="handleDelete(data.id)"
+          (nzOnCancel)="handleCancel()">删除</a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<!-- 员工编辑对话框 -->
+<nz-modal [(nzVisible)]="isShowEmployeeModal" nzTitle="编辑员工" (nzOnCancel)="handleEditEmployeeCancel()"
+  (nzOnOk)="editEmployee()">
+  <form nz-form [formGroup]="employeeEditForm">
+    <!-- 姓名 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>姓名</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+        <input nz-input formControlName="name" placeholder="请输入姓名" />
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入您的姓名!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('minlength')">
+            姓名长度最少为2位!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 性别 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>性别</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+        <nz-radio-group formControlName="gender">
+          <label nz-radio nzValue="0">女</label>
+          <label nz-radio nzValue="1">男</label>
+        </nz-radio-group>
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            性别为必选项!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('minlength')">
+            姓名长度最少为2位!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 邮箱 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>邮箱</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
+        <input nz-input formControlName="email" placeholder="请输入邮箱" type="email">
+        <ng-template #emailErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('email')">
+            您的邮箱格式不正确!
+          </ng-container>
+          <ng-container *ngIf="control.hasError('required')">
+            请输入您的邮箱!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 手机号码 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+        <input nz-input formControlName="phoneNumber" placeholder="请输入手机号" />
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('pattern')">
+            您输入的手机号格式不正确!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 入职日期 -->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7">入职日期</nz-form-label>
+      <nz-form-control [nzSpan]="12" [nzErrorTip]="userErrorTpl">
+        <nz-date-picker formControlName="joinDate"></nz-date-picker>
+        <ng-template #userErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('date')">
+            入职日期不能早于今天!
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

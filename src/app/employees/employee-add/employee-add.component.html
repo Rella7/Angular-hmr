@@ -1,0 +1,77 @@
+<form nz-form [formGroup]="employeeAddForm" (ngSubmit)="submitForm($event, employeeAddForm.value)">
+  <!-- 姓名 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>姓名</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+      <input nz-input formControlName="name" placeholder="请输入姓名" />
+      <ng-template #userErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          请输入您的姓名!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('minlength')">
+          姓名长度最少为2位!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- 性别 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>性别</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-radio-group formControlName="gender" nzName="gender">
+        <label nz-radio nzValue="0">女</label>
+        <label nz-radio nzValue="1">男</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- 邮箱 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
+      <input nz-input formControlName="email" placeholder="请输入邮箱" type="email" />
+      <ng-template #emailErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('email')">
+          您的邮箱格式不正确!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('required')">
+          请输入您的邮箱!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- 手机号 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">手机号</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="userErrorTpl">
+      <input nz-input formControlName="phoneNumber" placeholder="请输入手机号" />
+      <ng-template #userErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('pattern')">
+          您输入的手机号格式不正确!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- 入职日期 -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="7">入职日期</nz-form-label>
+    <nz-form-control [nzSpan]="12" [nzErrorTip]="userErrorTpl">
+      <nz-date-picker formControlName="joinDate"></nz-date-picker>
+      <ng-template #userErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('date')">
+          入职日期不能早于今天!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control [nzOffset]="7" [nzSpan]="12">
+      <button nz-button nzType="primary" [disabled]="!employeeAddForm.valid">添加</button>
+      <button nz-button (click)="resetForm($event)">重置</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -1,0 +1,29 @@
+.layout {
+  height: 100vh;
+}
+
+.logo {
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.2);
+  background-image: url('/assets/rella-logo.png');
+  background-size: cover;
+}
+
+nz-header {
+  background: #fff;
+  padding: 0;
+}
+
+nz-content {
+  margin: 24px 16px 0;
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  min-height: 360px;
+}
+
+nz-footer {
+  text-align: center;
+}
